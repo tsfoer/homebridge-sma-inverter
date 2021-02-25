@@ -31,20 +31,20 @@ function SMAInverter(log, config) {
 	this.value.FirmwareRevision = "1.0.0";
 	this.value.SerialNumber = "";
 
-	Characteristic.CustomAmperes = function() {
-		Characteristic.call(this, 'Amperes', 'E863F126-079E-48FF-8F27-9C2605A29F52');
-		this.setProps({
-			format: Characteristic.Formats.FLOAT,
-			unit: 'A',
-			minValue: 0,
-			maxValue: 65535,
-			minStep: 0.01,
-			perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY]
-		});
-		this.value = this.getDefaultValue();
-	};
-	inherits(Characteristic.CustomAmperes, Characteristic);
-	Characteristic.CustomAmperes.UUID = 'E863F126-079E-48FF-8F27-9C2605A29F52';
+//	Characteristic.CustomAmperes = function() {
+//		Characteristic.call(this, 'Amperes', 'E863F126-079E-48FF-8F27-9C2605A29F52');
+//		this.setProps({
+//			format: Characteristic.Formats.FLOAT,
+//			unit: 'A',
+//			minValue: 0,
+//			maxValue: 65535,
+//			minStep: 0.01,
+//			perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY]
+//		});
+//		this.value = this.getDefaultValue();
+//	};
+//	inherits(Characteristic.CustomAmperes, Characteristic);
+//	Characteristic.CustomAmperes.UUID = 'E863F126-079E-48FF-8F27-9C2605A29F52';
 
 	Characteristic.CustomKilowattHours = function() {
 		Characteristic.call(this, 'Total Consumption', 'E863F10C-079E-48FF-8F27-9C2605A29F52');
@@ -61,20 +61,20 @@ function SMAInverter(log, config) {
 	inherits(Characteristic.CustomKilowattHours, Characteristic);
 	Characteristic.CustomKilowattHours.UUID = 'E863F10C-079E-48FF-8F27-9C2605A29F52';
 
-	Characteristic.CustomVolts = function() {
-		Characteristic.call(this, 'Volts', 'E863F10A-079E-48FF-8F27-9C2605A29F52');
-		this.setProps({
-			format: Characteristic.Formats.FLOAT,
-			unit: 'V',
-			minValue: 0,
-			maxValue: 65535,
-			minStep: 0.1,
-			perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY]
-		});
-		this.value = this.getDefaultValue();
-	};
-	inherits(Characteristic.CustomVolts, Characteristic);
-	Characteristic.CustomVolts.UUID = 'E863F10A-079E-48FF-8F27-9C2605A29F52';
+//	Characteristic.CustomVolts = function() {
+//		Characteristic.call(this, 'Volts', 'E863F10A-079E-48FF-8F27-9C2605A29F52');
+//		this.setProps({
+//			format: Characteristic.Formats.FLOAT,
+//			unit: 'V',
+//			minValue: 0,
+//			maxValue: 65535,
+//			minStep: 0.1,
+//			perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY]
+//		});
+//		this.value = this.getDefaultValue();
+//	};
+//	inherits(Characteristic.CustomVolts, Characteristic);
+//	Characteristic.CustomVolts.UUID = 'E863F10A-079E-48FF-8F27-9C2605A29F52';
 
 	Characteristic.CustomWatts = function() {
 		Characteristic.call(this, 'Consumption', 'E863F10D-079E-48FF-8F27-9C2605A29F52');
@@ -186,21 +186,21 @@ SMAInverter.prototype = {
 				this.lightSensorToday.getCharacteristic(Characteristic.CurrentAmbientLightLevel).updateValue(data.buffer.readUInt32BE() / 1000);
 			}.bind(this));
 
-			// All Time - Light Sensor
-			client.readHoldingRegisters(30529, 10, function(err, data) {
-				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomKilowattHours).updateValue(data.buffer.readUInt32BE() / 1000);
-				this.lightSensorTotal.getCharacteristic(Characteristic.CurrentAmbientLightLevel).updateValue(data.buffer.readUInt32BE() / 1000);
-			}.bind(this));
+//			// All Time - Light Sensor
+//			client.readHoldingRegisters(30529, 10, function(err, data) {
+//				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomKilowattHours).updateValue(data.buffer.readUInt32BE() / 1000);
+//				this.lightSensorTotal.getCharacteristic(Characteristic.CurrentAmbientLightLevel).updateValue(data.buffer.readUInt32BE() / 1000);
+//			}.bind(this));
 
-			// Amperes - FakeGato
-			client.readHoldingRegisters(30977, 10, function(err, data) {
-				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomAmperes).updateValue(data.buffer.readUInt32BE() / 1000);
-			}.bind(this));
-
-			// Volts - FakeGato
-			client.readHoldingRegisters(30783, 10, function(err, data) {
-				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomVolts).updateValue(data.buffer.readUInt32BE() / 100);
-			}.bind(this));
+//			// Amperes - FakeGato
+//			client.readHoldingRegisters(30977, 10, function(err, data) {
+//				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomAmperes).updateValue(data.buffer.readUInt32BE() / 1000);
+//			}.bind(this));
+//
+//			// Volts - FakeGato
+//			client.readHoldingRegisters(30783, 10, function(err, data) {
+//				this.lightSensorCurrently.getCharacteristic(Characteristic.CustomVolts).updateValue(data.buffer.readUInt32BE() / 100);
+//			}.bind(this));
 		}
 		catch(err) {
 			this.log("Refresh failed", "Attempting reconnect...", err);
@@ -220,37 +220,37 @@ SMAInverter.prototype = {
 		})
 		.on('get',this._getValue.bind(this, "Currently"));
 
-		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomAmperes);
-		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomAmperes)
-		.on('get', this._getValue.bind(this, "CustomAmperes"));
+//		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomAmperes);
+//		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomAmperes)
+//		.on('get', this._getValue.bind(this, "CustomAmperes"));
 
 		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomKilowattHours);
 		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomKilowattHours)
 		.on('get', this._getValue.bind(this, "CustomKilowattHours"));
 
-		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomVolts);
-		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomVolts)
-		.on('get', this._getValue.bind(this, "CustomVolts"));
+//		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomVolts);
+//		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomVolts)
+//		.on('get', this._getValue.bind(this, "CustomVolts"));
 
 		this.lightSensorCurrently.addCharacteristic(Characteristic.CustomWatts);
 		this.lightSensorCurrently.getCharacteristic(Characteristic.CustomWatts)
 		.on('get', this._getValue.bind(this, "CustomWatts"));
 
 
-		this.lightSensorToday = new Service.LightSensor(this.name + " Today", "today");
-		this.lightSensorToday.getCharacteristic(Characteristic.CurrentAmbientLightLevel)
-		.setProps({
-			unit: "kWh"
-		})
-		.on('get',this._getValue.bind(this, "Today"));
-
-
-		this.lightSensorTotal = new Service.LightSensor(this.name + " Total", "total");
-		this.lightSensorTotal.getCharacteristic(Characteristic.CurrentAmbientLightLevel)
-		.setProps({
-			unit: "kWh"
-		})
-		.on('get',this._getValue.bind(this, "Total"));
+//		this.lightSensorToday = new Service.LightSensor(this.name + " Today", "today");
+//		this.lightSensorToday.getCharacteristic(Characteristic.CurrentAmbientLightLevel)
+//		.setProps({
+//			unit: "kWh"
+//		})
+//		.on('get',this._getValue.bind(this, "Today"));
+//
+//
+//		this.lightSensorTotal = new Service.LightSensor(this.name + " Total", "total");
+//		this.lightSensorTotal.getCharacteristic(Characteristic.CurrentAmbientLightLevel)
+//		.setProps({
+//			unit: "kWh"
+//		})
+//		.on('get',this._getValue.bind(this, "Total"));
 
 
 		this.loggingService = new FakeGatoHistoryService("energy", Accessory);
@@ -266,8 +266,8 @@ SMAInverter.prototype = {
 
 		return [
 			this.lightSensorCurrently,
-			this.lightSensorToday,
-			this.lightSensorTotal,
+//			this.lightSensorToday,
+//			this.lightSensorTotal,
 			this.loggingService,
 			this.informationService
 		];
